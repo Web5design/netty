@@ -340,6 +340,17 @@ public final class ChannelOutboundBuffer {
         return flushed[head];
     }
 
+    /**
+     * Replace the current msg with the given one.
+     * The replaced msg will automatically be released
+     *
+     */
+    public void current(Object msg) {
+        Object old = flushed[head];
+        safeRelease(old);
+        flushed[head] = msg;
+    }
+
     public void progress(long amount) {
         int head = this.head;
         ChannelPromise p = flushedPromises[head];
